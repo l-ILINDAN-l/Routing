@@ -2,14 +2,22 @@ import numpy as np
 
 
 class Routing:
-    def __init__(self, distanceMatrix):
-        self.__distanceMatrix = distanceMatrix
-
     __table_stops = None
     __table_point = None
     __table_road = None
     __distanceMatrix = None  # [array[int]]
     __distDynamicMatrix = None  # [array[int, array[int]]]
+
+    def __init__(self, distanceMatrix):
+        self.__distanceMatrix = distanceMatrix
+
+    def __init__(self, table_stops, table_point, table_road):
+        self.__table_stops = table_stops
+        self.__table_point = table_point
+        self.__table_road = table_road
+
+    def _create_dist_matr(self) -> None:
+        pass
 
     def _create_dist_dyn_matr(self) -> None:
 
