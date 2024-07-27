@@ -74,10 +74,42 @@ class Routing:
         optimal_distance, path = _dp(1, 0)
         return path
 
+    def tsp_without_return(self, start, end, points):
+        points = [start] + points + [end]
+        n = len(points)
+
+        memo = {}
+
+        def _dp(mask, pos):
+            if (mask, pos) in memo:
+                return memo[(mask, pos)]
+            if mask == (1 << (n - 1)) - 1:
+                return (self.__distDynamicMatrix[points[pos]][end][0], [points[pos], pos])
+            ans = float('inf')
+            best_path = []
+            for next_pos in range(1, n - 1):
+                if mask & (1 << next_pos) == 0:
+                    new_mask = mask | (1 << next_pos)
+                    candidate_dist, candidate_path = _dp(new_mask, next_pos)
+                    candidate_path += self.__distDynamicMatrix[points[pos]][points[next_pos]]
+                    if candidate_dist < ans:
+                        ans = candidate_dist
+                        best_path = candidate_path
+            memo[(mask, pos)] = (ans, [points[pos]] + best_path)
+            return memo[(mask, pos)]
+
+        optimal_distance, path = _dp(1, 0)
+        return path
+
     def find_optimal_route(self, start_id, through_points):
-        self._create_dist_dyn_matr()
-        route = self.tsp_without_return(start_id, through_points)
-        return route
+        if self.__distDynamicMatrix is None:
+            self._create_dist_dyn_matr()
+        return self.tsp_without_return(start_id, through_points)
+
+    def find_optimal_route(self, start_id, end_id, through_points):
+        if self.__distDynamicMatrix is None:
+            self._create_dist_dyn_matr()
+        return self.tsp_without_return(start_id, end_id, through_points)
 
     def print_rout(self, route):
         print(route[0], end=" ")
