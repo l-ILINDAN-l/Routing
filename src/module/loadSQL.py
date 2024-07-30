@@ -1,21 +1,47 @@
-from psycopg2 import OperationalError
 import psycopg2
 
-def create_connection(db_name, db_user, db_password, db_host, db_port):
-    connection = None
-    try:
-        connection = psycopg2.connect(
-            database=db_name,
-            user=db_user,
-            password=db_password,
-            host=db_host,
-            port=db_port,
-        )
-        print("Connection to PostgreSQL DB successful")
-    except OperationalError as e:
-        print(f"The error '{e}' occurred")
-    return connection
+# Параметры подключения к базе данных
+host = "LOCALHOST"       # Адрес сервера базы данных
+port = "5432"            # Порт подключения к базе данных
+dbname = "postgres"  # Имя базы данных
+user = "postgres"   # Имя пользователя
+password = "U-)ei12uwji"  # Пароль
 
-connection = create_connection(
-    "LOACALHOST", "postgres", "abc123", "127.0.0.1", "5432"
-)
+try:
+    # Подключение к базе данных
+    conn = psycopg2.connect(
+        host=host,
+        port=port,
+        dbname=dbname,
+        user=user,
+        password=password
+    )
+
+    # Создание курсора
+    cursor = conn.cursor()
+
+    # Выполнение запроса для получения списка таблиц
+    cursor.execute(
+        """
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'public'
+        """
+    )
+
+    # Получение результата
+    tables = cursor.fetchall()
+
+    # Вывод списка таблиц
+    print("Список таблиц в базе данных:")
+    for table in tables:
+        print(table[0])
+
+except Exception as e:
+    print(f"Ошибка подключения к базе данных: {e}")
+finally:
+    # Закрытие курсора и соединения
+    if cursor:
+        cursor.close()
+    if conn:
+        conn.close()
