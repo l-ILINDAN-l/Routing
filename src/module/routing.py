@@ -59,12 +59,12 @@ class Routing:
             self.name_table_route=f'itinerary{a+1}'
             cursor.execute(
                 f"""
-                INSERT INTO table_itinerary (itinerary_name)
-                VALUES (itinerary{a+1});
-                CREATE TABLE itinerary{a+1}(
+                INSERT INTO table_itinerary (itinerary_name) VALUES (itinerary{a+1});
+
+                CREATE TABLE IF NOT EXISTS itinerary{a+1}(
                     number_in_itinerary SERIAL PRIMARY KEY,
                     point_id INTEGER
-                )
+                );
                 """
             )
         except Exception as e:
@@ -166,13 +166,16 @@ class Routing:
                     password=password
                 )
             cursor = conn.cursor()
+            s = ""
             for i in path:
-                cursor.execute(
-                    f"""
-                    INSERT INTO {self.name_table_route} (point_id)
-                    VALUES {i}
-                    """
-                )
+                s = s + f"({i}),"
+            s = s[:-1] + ";"
+            cursor.execute(
+				f"""
+				INSERT INTO {self.name_table_route} (point_id)
+				VALUES {s}
+				"""
+            )
         except Exception as e:
             print(f"Ошибка подключения к базе данных: {e}")
         finally:
@@ -209,7 +212,33 @@ class Routing:
             return memo[(mask, pos)]
 
         optimal_distance, path = _dp(1, 0)
-
+        try:
+            conn = psycopg2.connect(
+                    host=host,
+                    port=port,
+                    dbname=dbname,
+                    user=user,
+                    password=password
+                )
+            cursor = conn.cursor()
+            s = ""
+            for i in path:
+                s = s + f"({i}),"
+            s = s[:-1] + ";"
+            cursor.execute(
+				f"""
+				INSERT INTO {self.name_table_route} (point_id)
+				VALUES {s}
+				"""
+            )
+        except Exception as e:
+            print(f"Ошибка подключения к базе данных: {e}")
+        finally:
+            # Закрытие курсора и соединения
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
         return path
 
     def find_optimal_route(self, start_id, through_points):
