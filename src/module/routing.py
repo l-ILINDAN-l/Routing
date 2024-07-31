@@ -2,6 +2,8 @@ import numpy as np
 import folium
 import math
 import src.module.loadSQL as loadSQL
+import psycopg2
+from data_hosts_vlad import *
 
 
 def dist_lat_long(point1_lat, point1_long, point2_lat, point2_long) -> float:
@@ -18,6 +20,8 @@ class Routing:
     __distanceMatrix = None  # [array[int]]
     __distDynamicMatrix = None  # [array[int, array[int]]]
 
+    name_table_route = ''
+
     # def __init__(self, distanceMatrix):
     #     self.__distanceMatrix = distanceMatrix
 
@@ -29,6 +33,50 @@ class Routing:
 
         self._create_dist_matr()
         self._create_dist_dyn_matr()
+
+
+        try:
+            # Подключение к базе данных
+            conn = psycopg2.connect(
+                host=host,
+                port=port,
+                dbname=dbname,
+                user=user,
+                password=password
+            )
+
+            # Создание курсора
+            cursor = conn.cursor()
+
+            cursor.execute(
+                """
+                SELECT * FROM table_itinerary
+                """
+            )
+
+            rows = cursor.fetchall()
+            a = len(rows)
+            self.name_table_route=f'itinerary{a+1}'
+            cursor.execute(
+                f"""
+                INSERT INTO table_itinerary (itinerary_name)
+                VALUES (itinerary{a+1});
+                CREATE TABLE itinerary{a+1}(
+                    number_in_itinerary SERIAL PRIMARY KEY,
+                    point_id INTEGER
+                )
+                """
+            )
+        except Exception as e:
+            print(f"Ошибка подключения к базе данных: {e}")
+        finally:
+            # Закрытие курсора и соединения
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
+
 
     # def __init__(self, table_stops, table_point, table_road):
     #     self.__table_stops = table_stops
@@ -109,6 +157,31 @@ class Routing:
             return memo[(mask, pos)]
 
         optimal_distance, path = _dp(1, 0)
+        try:
+            conn = psycopg2.connect(
+                    host=host,
+                    port=port,
+                    dbname=dbname,
+                    user=user,
+                    password=password
+                )
+            cursor = conn.cursor()
+            for i in path:
+                cursor.execute(
+                    f"""
+                    INSERT INTO {self.name_table_route} (point_id)
+                    VALUES {i}
+                    """
+                )
+        except Exception as e:
+            print(f"Ошибка подключения к базе данных: {e}")
+        finally:
+            # Закрытие курсора и соединения
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
         return path
 
     def tsp_without_return(self, start: int, end: int, points: list) -> list:
@@ -136,6 +209,7 @@ class Routing:
             return memo[(mask, pos)]
 
         optimal_distance, path = _dp(1, 0)
+
         return path
 
     def find_optimal_route(self, start_id, through_points):
