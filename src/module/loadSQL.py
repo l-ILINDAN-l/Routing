@@ -1,47 +1,61 @@
 import psycopg2
 
-# Параметры подключения к базе данных
 host = "LOCALHOST"       # Адрес сервера базы данных
 port = "5432"            # Порт подключения к базе данных
 dbname = "postgres"  # Имя базы данных
 user = "postgres"   # Имя пользователя
 password = "U-)ei12uwji"  # Пароль
 
-try:
-    # Подключение к базе данных
-    conn = psycopg2.connect(
-        host=host,
-        port=port,
-        dbname=dbname,
-        user=user,
-        password=password
-    )
+def get_tables_as_2d_arrays(host, dbname, user, password):
+    try:
+        # Подключение к базе данных
+        conn = psycopg2.connect(
+            host=host,
+            port=port,
+            dbname=dbname,
+            user=user,
+            password=password
+        )
 
-    # Создание курсора
-    cursor = conn.cursor()
+        # Создание курсора
+        cursor = conn.cursor()
 
-    # Выполнение запроса для получения списка таблиц
-    cursor.execute(
-        """
-        SELECT table_name
-        FROM information_schema.tables
-        WHERE table_schema = 'public'
-        """
-    )
+        # Выполнение запроса для получения списка таблиц
+        cursor.execute(
+            """
+            SELECT table_name
+            FROM information_schema.tables
+            WHERE table_schema = 'public'
+            """
+        )
 
-    # Получение результата
-    tables = cursor.fetchall()
+        # Получение результата
+        tables = cursor.fetchall()
 
-    # Вывод списка таблиц
-    print("Список таблиц в базе данных:")
-    for table in tables:
-        print(table[0])
+        data = {}
+        for table in tables:
+            table_name = table[0]
+            cursor.execute(f"SELECT * FROM {table_name}")
+            rows = cursor.fetchall()
+            # Принудительное декодирование строк в UTF-8 с игнорированием или замещением ошибок
+            decoded_rows = []
+            for row in rows:
+                decoded_row = []
+                for col in row:
+                    if isinstance(col, bytes):
+                        decoded_row.append(col.decode('utf-8', errors='replace'))
+                    else:
+                        decoded_row.append(col)
+                decoded_rows.append(decoded_row)
+            data[table_name] = decoded_rows
 
-except Exception as e:
-    print(f"Ошибка подключения к базе данных: {e}")
-finally:
-    # Закрытие курсора и соединения
-    if cursor:
-        cursor.close()
-    if conn:
-        conn.close()
+        return data
+
+    except Exception as e:
+        print(f"Ошибка подключения к базе данных: {e}")
+    finally:
+        # Закрытие курсора и соединения
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
