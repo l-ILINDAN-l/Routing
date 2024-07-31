@@ -6,7 +6,7 @@ dbname = "postgres"  # Имя базы данных
 user = "postgres"   # Имя пользователя
 password = "U-)ei12uwji"  # Пароль
 
-def get_tables_as_2d_arrays(host, dbname, user, password):
+def get_tables_as_2d_arrays(host, dbname, user, password) -> dict:
     try:
         # Подключение к базе данных
         conn = psycopg2.connect(

@@ -1,34 +1,60 @@
 import numpy as np
 import folium
 import math
+import src.module.loadSQL as loadSQL
 
 
 def dist_lat_long(point1_lat, point1_long, point2_lat, point2_long) -> float:
-    return 111.2 * math.acos(math.sin(math.radians(point1_lat)) * math.sin(math.radians(point2_lat))
-                             + math.cos(math.radians(point1_lat)) * math.cos(math.radians(point2_lat)) * math.cos(
-        math.radians(point1_long - point2_long)))
+    return (111.2 * math.acos(math.sin(math.radians(point1_lat)) * math.sin(math.radians(point2_lat))
+                              + math.cos(math.radians(point1_lat)) * math.cos(math.radians(point2_lat)) *
+                              math.cos(math.radians(point1_long - point2_long))))
 
 
 class Routing:
-    __table_stops = None
     __table_point = None
     __table_road = None
+    __table_stops = None
+
     __distanceMatrix = None  # [array[int]]
     __distDynamicMatrix = None  # [array[int, array[int]]]
 
-    def __init__(self, distanceMatrix):
-        self.__distanceMatrix = distanceMatrix
+    # def __init__(self, distanceMatrix):
+    #     self.__distanceMatrix = distanceMatrix
 
-    def __init__(self, table_stops, table_point, table_road):
-        self.__table_stops = table_stops
-        self.__table_point = table_point
-        self.__table_road = table_road
+    def __init__(self, host, dbname, user, password):
+        dict_tables = loadSQL.get_tables_as_2d_arrays(host, dbname, user, password)
+        self.__table_point = dict_tables["table_points"]
+        self.__table_road = dict_tables["table_road"]
+        self.__table_stops = dict_tables["table_stops"]
+
+        self._create_dist_matr()
+        self._create_dist_dyn_matr()
+
+    # def __init__(self, table_stops, table_point, table_road):
+    #     self.__table_stops = table_stops
+    #     self.__table_point = table_point
+    #     self.__table_road = table_road
 
     def _create_dist_matr(self) -> None:
-        pass
-
+        count_point = len(self.__table_point)
+        self.__distanceMatrix = [[float('inf') for _ in range(count_point)] for _ in range(count_point)]
         for road in self.__table_road:
-            pass
+            self.__distanceMatrix[road[2] - 1][road[3] - 1] = road[4]
+            if road[1]:
+                self.__distanceMatrix[road[3] - 1][road[2] - 1] = road[4]
+        for stop in self.__table_stops:
+            point_id = stop[1]
+            road_id = stop[5]
+            start_id = self.__table_road[road_id - 1][2]
+            end_id = self.__table_road[road_id - 1][3]
+            self.__distanceMatrix[start_id - 1][point_id - 1] = dist_lat_long(
+                self.__table_point[start_id - 1][1], self.__table_point[start_id - 1][2],
+                self.__table_point[point_id - 1][1], self.__table_point[point_id - 1][2]
+            )
+            self.__distanceMatrix[point_id - 1][end_id - 1] = dist_lat_long(
+                self.__table_point[point_id - 1][1], self.__table_point[point_id - 1][2],
+                self.__table_point[end_id - 1][1], self.__table_point[end_id - 1][2]
+            )
 
     def _create_dist_dyn_matr(self) -> None:
 
