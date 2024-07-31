@@ -1,4 +1,12 @@
 import numpy as np
+import folium
+import math
+
+
+def dist_lat_long(point1_lat, point1_long, point2_lat, point2_long) -> float:
+    return 111.2 * math.acos(math.sin(math.radians(point1_lat)) * math.sin(math.radians(point2_lat))
+                             + math.cos(math.radians(point1_lat)) * math.cos(math.radians(point2_lat)) * math.cos(
+        math.radians(point1_long - point2_long)))
 
 
 class Routing:
@@ -18,6 +26,9 @@ class Routing:
 
     def _create_dist_matr(self) -> None:
         pass
+
+        for road in self.__table_road:
+            pass
 
     def _create_dist_dyn_matr(self) -> None:
 
@@ -44,7 +55,7 @@ class Routing:
                         self.__distDynamicMatrix[i][j][1] = self.__distDynamicMatrix[i][k][1] + \
                                                             self.__distDynamicMatrix[k][j][1]
 
-    def tsp_without_return(self, start, points):
+    def tsp_without_return(self, start: int, points: list) -> list:
         points = [start] + points
         n = len(points)
 
@@ -74,7 +85,7 @@ class Routing:
         optimal_distance, path = _dp(1, 0)
         return path
 
-    def tsp_without_return(self, start, end, points):
+    def tsp_without_return(self, start: int, end: int, points: list) -> list:
         points = [start] + points + [end]
         n = len(points)
 
@@ -111,7 +122,17 @@ class Routing:
             self._create_dist_dyn_matr()
         return self.tsp_without_return(start_id, end_id, through_points)
 
-    def print_rout(self, route):
+    def print_rout(self, route) -> None:
         print(route[0], end=" ")
         for index in range(1, len(route)):
             print(*(self.__distDynamicMatrix[route[index - 1]][route[index]][1]), end=" ")
+
+    def create_map(self, path: list, name_file: str) -> None:
+        points = []
+        for point_id in path:
+            points.append((self.__table_point[point_id][1], self.__table_point[point_id][2]))
+        map_folium = folium.Map(location=points[0], zoom_start=14)
+        folium.PolyLine(points, color='blue', weight=5, opacity=0.7).add_to(map_folium)
+        for point in points:
+            folium.Marker(location=point).add_to(map_folium)
+        map_folium.save(name_file + '.html')
