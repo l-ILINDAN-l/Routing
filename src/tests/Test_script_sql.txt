@@ -22,6 +22,11 @@ longitude FLOAT,
 road_id INTEGER
 );
 
+CREATE TABLE table_itinerary(
+	itinerary_id SERIAL PRIMARY KEY,
+	itinerary_name VARCHAR(50)
+);
+
 INSERT INTO table_points (latitude, longitude)
 VALUES
 (50+0.001*3, 40+0.01*12),(50+0.001*3, 40+0.01*17),(50+0.001*7, 40+0.01*9),(50+0.001*9, 40+0.01*18),
