@@ -59,3 +59,10 @@ def get_tables_as_2d_arrays(host, dbname, user, password):
             cursor.close()
         if conn:
             conn.close()
+
+
+tables_data = get_tables_as_2d_arrays(host, dbname, user, password)
+for table, rows in tables_data.items():
+    print(f"Table: {table}")
+    for row in rows:
+        print(row)
