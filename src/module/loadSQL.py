@@ -55,9 +55,43 @@ def get_tables_as_2d_arrays(host, dbname, user, password) -> dict:
         if conn:
             conn.close()
 
+name_table_route = ""
 
-tables_data = get_tables_as_2d_arrays(host, dbname, user, password)
-for table, rows in tables_data.items():
-    print(f"Table: {table}")
-    for row in rows:
-        print(row)
+try:
+    conn = psycopg2.connect(
+        host=host,
+        port=port,
+        dbname=dbname,
+        user=user,
+        password=password
+    )
+
+    # Создание курсора
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT * FROM table_itinerary
+        """
+    )
+
+    rows = cursor.fetchall()
+    a = len(rows)
+    name_table_route=f'itinerary{a+1}'
+    cursor.execute(
+        f"""
+        INSERT INTO table_itinerary (itinerary_name) VALUES ('itinerary{a+1}');
+        """
+    )
+    conn.commit()
+except Exception as e:
+    print(f"Ошибка подключения к базе данных: {e}")
+finally:
+    # Закрытие курсора и соединения
+    if cursor:
+        cursor.close()
+    if conn:
+        conn.close()
+
+
+print(name_table_route)
