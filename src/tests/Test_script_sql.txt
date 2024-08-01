@@ -69,16 +69,16 @@ INSERT INTO table_stops (stops_name)
 VALUES
 ('Остановка 1'),('Остановка 2'),('Остановка 3'),('Остановка 4'),('Остановка 5'),
 ('Остановка 6'),('Остановка 7'),('Остановка 8'),('Остановка 9'),('Остановка 10');
-UPDATE table_stops set latitude=50+0.001*6, longitude=40+0.01*17.5 where stop_id=1;
-UPDATE table_stops set latitude=50+0.001*7.5, longitude=40+0.01*13 where stop_id=2;
-UPDATE table_stops set latitude=50+0.001*11, longitude=40+0.01*9 where stop_id=3;
-UPDATE table_stops set latitude=50+0.001*16, longitude=40+0.01*6 where stop_id=4;
-UPDATE table_stops set latitude=50+0.001*16, longitude=40+0.01*22 where stop_id=5;
-UPDATE table_stops set latitude=50+0.001*19.5, longitude=40+0.01*14 where stop_id=6;
-UPDATE table_stops set latitude=50+0.001*20, longitude=40+0.01*4.5 where stop_id=7;
-UPDATE table_stops set latitude=50+0.001*23.5, longitude=40+0.01*16.5 where stop_id=8;
-UPDATE table_stops set latitude=50+0.001*25, longitude=40+0.01*19.5 where stop_id=9;
-UPDATE table_stops set latitude=50+0.001*28.5, longitude=40+0.01*8 where stop_id=10;
+UPDATE table_stops set latitude=50+0.01*6, longitude=40+0.01*17.5 where stop_id=1;
+UPDATE table_stops set latitude=50+0.01*7.5, longitude=40+0.01*13 where stop_id=2;
+UPDATE table_stops set latitude=50+0.01*11, longitude=40+0.01*9 where stop_id=3;
+UPDATE table_stops set latitude=50+0.01*16, longitude=40+0.01*6 where stop_id=4;
+UPDATE table_stops set latitude=50+0.01*16, longitude=40+0.01*22 where stop_id=5;
+UPDATE table_stops set latitude=50+0.01*19.5, longitude=40+0.01*14 where stop_id=6;
+UPDATE table_stops set latitude=50+0.01*20, longitude=40+0.01*4.5 where stop_id=7;
+UPDATE table_stops set latitude=50+0.01*23.5, longitude=40+0.01*16.5 where stop_id=8;
+UPDATE table_stops set latitude=50+0.01*25, longitude=40+0.01*19.5 where stop_id=9;
+UPDATE table_stops set latitude=50+0.01*28.5, longitude=40+0.01*8 where stop_id=10;
 UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=2 and end_id=4) WHERE stop_id=1;
 UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=1 and end_id=7) WHERE stop_id=2;
 UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=3 and end_id=9) WHERE stop_id=3;
