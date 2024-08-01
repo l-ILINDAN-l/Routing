@@ -57,8 +57,23 @@ def get_tables_as_2d_arrays(host, port, dbname, user, password) -> dict:
             conn.close()
 
 
+<<<<<<< HEAD
 tables_data = get_tables_as_2d_arrays(host, dbname, user, password)
 for table, rows in tables_data.items():
     print(f"Table: {table}")
     for row in rows:
         print(row)
+=======
+# tables_data = get_tables_as_2d_arrays(host, port, dbname, user, password)
+# for table, rows in tables_data.items():
+#     print(f"Table: {table}")
+#     for row in rows:
+#         print(row)
+#
+#
+# tables_data = get_tables_as_2d_arrays(host, port, dbname, user, password)
+# for table, rows in tables_data.items():
+#     print(f"Table: {table}")
+#     for row in rows:
+#         print(row)
+>>>>>>> 797be50259342ec18ce989c2d1e01197729f0568
