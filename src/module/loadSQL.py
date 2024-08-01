@@ -1,7 +1,8 @@
 import psycopg2
-from data_hosts_vlad import *
+#from data_hosts_vlad import *
+from src.tests.my_SQL import *
 
-def get_tables_as_2d_arrays(host, dbname, user, password) -> dict:
+def get_tables_as_2d_arrays(host, port, dbname, user, password) -> dict:
     try:
         # Подключение к базе данных
         conn = psycopg2.connect(
@@ -54,6 +55,13 @@ def get_tables_as_2d_arrays(host, dbname, user, password) -> dict:
             cursor.close()
         if conn:
             conn.close()
+
+
+tables_data = get_tables_as_2d_arrays(host, port, dbname, user, password)
+for table, rows in tables_data.items():
+    print(f"Table: {table}")
+    for row in rows:
+        print(row)
 
 
 tables_data = get_tables_as_2d_arrays(host, dbname, user, password)
