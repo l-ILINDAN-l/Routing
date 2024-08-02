@@ -1,100 +1,102 @@
 
-CREATE TABLE table_points(
-point_id SERIAL PRIMARY KEY,
-latitude FLOAT,
-longitude FLOAT
-);
+	CREATE TABLE table_points(
+	point_id SERIAL PRIMARY KEY,
+	latitude FLOAT,
+	longitude FLOAT
+	);
 
-CREATE TABLE table_road(
-road_id SERIAL PRIMARY KEY,
-oneway BOOLEAN,
-start_id INTEGER,
-end_id INTEGER,
-length FLOAT
-);
+	CREATE TABLE table_road(
+	road_id SERIAL PRIMARY KEY,
+	oneway BOOLEAN,
+	start_id INTEGER,
+	end_id INTEGER,
+	length FLOAT
+	);
 
-CREATE TABLE table_stops(
-stop_id SERIAL PRIMARY KEY,
-point_id INTEGER,
-stops_name VARCHAR(100),
-latitude FLOAT,
-longitude FLOAT,
-road_id INTEGER
-);
+	CREATE TABLE table_stops(
+	stop_id SERIAL PRIMARY KEY,
+	point_id INTEGER,
+	stops_name VARCHAR(100),
+	latitude FLOAT,
+	longitude FLOAT,
+	road_id INTEGER
+	);
 
-CREATE TABLE table_itinerary(
-	itinerary_id SERIAL PRIMARY KEY,
-	itinerary_name VARCHAR(50)
-);
+	CREATE TABLE table_itinerary(
+		itinerary_id SERIAL PRIMARY KEY,
+		itinerary_name VARCHAR(50)
+	);
 
-INSERT INTO table_points (latitude, longitude)
-VALUES
-(50+0.01*11, 40+0.01*3),(50+0.01*18, 40+0.01*3),(50+0.01*8, 40+0.01*7),(50+0.01*19, 40+0.01*9),
-(50+0.01*3, 40+0.01*11),(50+0.01*5, 40+0.01*12),(50+0.01*13, 40+0.01*12),(50+0.01*23, 40+0.01*14),
-(50+0.01*8, 40+0.01*15),(50+0.01*16, 40+0.01*16),(50+0.01*2, 40+0.01*17),(50+0.01*14, 40+0.01*17),
-(50+0.01*7, 40+0.01*20),(50+0.01*19, 40+0.01*20),(50+0.01*12, 40+0.01*22),(50+0.01*5, 40+0.01*23),
-(50+0.01*5, 40+0.01*27),(50+0.01*12, 40+0.01*27),(50+0.01*3, 40+0.01*30),(50+0.01*9, 40+0.01*30),
-(50+0.01*18, 40+0.01*20),(50+0.01*10, 40+0.01*32),
-(50.185,40.6),(50.12,40.075),(50.08,40.09),(50.05,40.16),(50.2,40.185),(50.13,40.195),(50.04,40.21),(50.15,40.24),(50.185,40.25),(50.07,40.285);
-INSERT INTO table_road (oneway, start_id, end_id)
-VALUES
-(TRUE, 1, 7),(TRUE, 2, 1),(TRUE, 2, 4),(TRUE, 3, 5),(TRUE, 3, 9),(TRUE, 4, 2),(TRUE, 4, 10),(TRUE, 4, 8),(TRUE, 5, 3),(TRUE, 5, 11),
-(TRUE, 6, 9),(TRUE, 7, 1),(TRUE, 7, 9),(TRUE, 7, 10),(TRUE, 7, 12),(TRUE, 8, 14),(TRUE, 9, 3),(TRUE, 9, 6),
-(TRUE, 9, 7),(TRUE, 9, 11),(TRUE, 10, 4),(TRUE, 10, 7),(TRUE, 10, 14),(TRUE, 11, 5),(TRUE, 11, 13),(TRUE, 11, 16),(TRUE, 12, 15),
-(TRUE, 13, 11),(TRUE, 13, 15),(TRUE, 14, 8),(TRUE, 14, 10),(TRUE, 14, 18),(TRUE, 15, 21),(TRUE, 16, 17),(TRUE, 17, 19),(TRUE, 17, 20),
-(TRUE, 18, 14),(TRUE, 18, 15),(TRUE, 18, 20),(TRUE, 19, 17),(TRUE, 20, 17),(TRUE, 20, 18),(TRUE, 20, 22),(TRUE, 21, 14),(TRUE, 22, 20);
+	INSERT INTO table_points (latitude, longitude)
+	VALUES
+	(50+0.01*11, 40+0.01*3),(50+0.01*18, 40+0.01*3),(50+0.01*8, 40+0.01*7),(50+0.01*19, 40+0.01*9),
+	(50+0.01*3, 40+0.01*11),(50+0.01*5, 40+0.01*12),(50+0.01*13, 40+0.01*12),(50+0.01*23, 40+0.01*14),
+	(50+0.01*8, 40+0.01*15),(50+0.01*16, 40+0.01*16),(50+0.01*2, 40+0.01*17),(50+0.01*14, 40+0.01*17),
+	(50+0.01*7, 40+0.01*20),(50+0.01*19, 40+0.01*20),(50+0.01*12, 40+0.01*22),(50+0.01*5, 40+0.01*23),
+	(50+0.01*5, 40+0.01*27),(50+0.01*12, 40+0.01*27),(50+0.01*3, 40+0.01*30),(50+0.01*9, 40+0.01*30),
+	(50+0.01*18, 40+0.01*20),(50+0.01*10, 40+0.01*32),
+	(50.185,40.6),(50.12,40.075),(50.08,40.09),(50.05,40.16),(50.2,40.185),(50.13,40.195),(50.04,40.21),(50.15,40.24),(50.185,40.25),(50.07,40.285);
+	INSERT INTO table_road (oneway, start_id, end_id)
+	VALUES
+	(TRUE, 1, 7),(TRUE, 2, 1),(TRUE, 2, 4),(TRUE, 3, 5),(TRUE, 3, 9),(TRUE, 4, 2),(TRUE, 4, 10),(TRUE, 4, 8),(TRUE, 5, 3),(TRUE, 5, 11),
+	(TRUE, 6, 9),(TRUE, 7, 1),(TRUE, 7, 9),(TRUE, 7, 10),(TRUE, 7, 12),(TRUE, 8, 14),(TRUE, 9, 3),(TRUE, 9, 6),
+	(TRUE, 9, 7),(TRUE, 9, 11),(TRUE, 10, 4),(TRUE, 10, 7),(TRUE, 10, 14),(TRUE, 11, 5),(TRUE, 11, 13),(TRUE, 11, 16),(TRUE, 12, 15),
+	(TRUE, 13, 11),(TRUE, 13, 15),(TRUE, 14, 8),(TRUE, 14, 10),(TRUE, 14, 18),(TRUE, 15, 21),(TRUE, 16, 17),(TRUE, 17, 19),(TRUE, 17, 20),
+	(TRUE, 18, 14),(TRUE, 18, 15),(TRUE, 18, 20),(TRUE, 19, 17),(TRUE, 20, 17),(TRUE, 20, 18),(TRUE, 20, 22),(TRUE, 21, 14),(TRUE, 22, 20);
 
-UPDATE table_road
-SET length = subquery.distance
-FROM (
-	SELECT
-	r.start_id,
-	r.end_id,
-	(
-		6371 * acos(
-			cos(radians(p1.latitude*111)) * cos(radians(p2.latitude*111)) *
-			cos(radians(p2.longitude*111) - radians(p1.longitude*111)) +
-			sin(radians(p1.latitude*111)) * sin(radians(p2.latitude*111))
-		)
-	) AS distance
-	FROM
-		table_road r
-	JOIN
-		table_points p1 ON r.start_id = p1.point_id
-	JOIN
-		table_points p2 ON r.end_id = p2.point_id
-) AS subquery
-WHERE
-	table_road.start_id = subquery.start_id
-	AND table_road.end_id = subquery.end_id;
-INSERT INTO table_stops (stops_name)
-VALUES
-('Остановка 1'),('Остановка 2'),('Остановка 3'),('Остановка 4'),('Остановка 5'),
-('Остановка 6'),('Остановка 7'),('Остановка 8'),('Остановка 9'),('Остановка 10');
-UPDATE table_stops set latitude=50+0.01*6, longitude=40+0.01*17.5 where stop_id=1;
-UPDATE table_stops set latitude=50+0.01*7.5, longitude=40+0.01*13 where stop_id=2;
-UPDATE table_stops set latitude=50+0.01*11, longitude=40+0.01*9 where stop_id=3;
-UPDATE table_stops set latitude=50+0.01*16, longitude=40+0.01*6 where stop_id=4;
-UPDATE table_stops set latitude=50+0.01*16, longitude=40+0.01*22 where stop_id=5;
-UPDATE table_stops set latitude=50+0.01*19.5, longitude=40+0.01*14 where stop_id=6;
-UPDATE table_stops set latitude=50+0.01*20, longitude=40+0.01*4.5 where stop_id=7;
-UPDATE table_stops set latitude=50+0.01*23.5, longitude=40+0.01*16.5 where stop_id=8;
-UPDATE table_stops set latitude=50+0.01*25, longitude=40+0.01*19.5 where stop_id=9;
-UPDATE table_stops set latitude=50+0.01*28.5, longitude=40+0.01*8 where stop_id=10;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=2 and end_id=4) WHERE stop_id=1;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=7 and end_id=1) WHERE stop_id=2;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=9 and end_id=3) WHERE stop_id=3;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=9 and end_id=11) WHERE stop_id=4;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=8 and end_id=14) WHERE stop_id=5;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=12 and end_id=15) WHERE stop_id=6;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=11 and end_id=16) WHERE stop_id=7;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=14 and end_id=18) WHERE stop_id=8;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=21 and end_id=14) WHERE stop_id=9;
-UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=17 and end_id=20) WHERE stop_id=10;
+	UPDATE table_road
+	SET length = subquery.distance
+	FROM (
+		SELECT
+		r.start_id,
+		r.end_id,
+		(
+			6371 * acos(
+				cos(radians(p1.latitude*111)) * cos(radians(p2.latitude*111)) *
+				cos(radians(p2.longitude*111) - radians(p1.longitude*111)) +
+				sin(radians(p1.latitude*111)) * sin(radians(p2.latitude*111))
+			)
+		) AS distance
+		FROM
+			table_road r
+		JOIN
+			table_points p1 ON r.start_id = p1.point_id
+		JOIN
+			table_points p2 ON r.end_id = p2.point_id
+	) AS subquery
+	WHERE
+		table_road.start_id = subquery.start_id
+		AND table_road.end_id = subquery.end_id;
+	INSERT INTO table_stops (stops_name)
+	VALUES
+	('Остановка 1'),('Остановка 2'),('Остановка 3'),('Остановка 4'),('Остановка 5'),
+	('Остановка 6'),('Остановка 7'),('Остановка 8'),('Остановка 9'),('Остановка 10');
 
-UPDATE table_stops
-SET point_id = table_points.point_id
-FROM table_points
-WHERE
-	table_stops.latitude = table_points.latitude
-	AND table_stops.longitude = table_points.longitude;
+	(50.185,40.6),(50.12,40.075),(50.08,40.09),(50.05,40.16),(50.2,40.185),(50.13,40.195),(50.04,40.21),(50.15,40.24),(50.185,40.25),(50.07,40.285);
+	UPDATE table_stops set latitude=50.185, longitude=40.6 where stop_id=1;
+	UPDATE table_stops set latitude=50.12, longitude=40.075 where stop_id=2;
+	UPDATE table_stops set latitude=50.08, longitude=40.09 where stop_id=3;
+	UPDATE table_stops set latitude=50.05, longitude=40.16 where stop_id=4;
+	UPDATE table_stops set latitude=50.2, longitude=40.185 where stop_id=5;
+	UPDATE table_stops set latitude=50.13, longitude=40.195 where stop_id=6;
+	UPDATE table_stops set latitude=50.04, longitude=40.21 where stop_id=7;
+	UPDATE table_stops set latitude=50.15, longitude=40.24 where stop_id=8;
+	UPDATE table_stops set latitude=50.185, longitude=40.25 where stop_id=9;
+	UPDATE table_stops set latitude=50.07, longitude=40.285 where stop_id=10;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=2 and end_id=4) WHERE stop_id=1;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=7 and end_id=1) WHERE stop_id=2;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=9 and end_id=3) WHERE stop_id=3;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=9 and end_id=11) WHERE stop_id=4;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=8 and end_id=14) WHERE stop_id=5;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=12 and end_id=15) WHERE stop_id=6;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=11 and end_id=16) WHERE stop_id=7;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=14 and end_id=18) WHERE stop_id=8;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=21 and end_id=14) WHERE stop_id=9;
+	UPDATE table_stops SET road_id = (SELECT road_id FROM table_road WHERE start_id=17 and end_id=20) WHERE stop_id=10;
+
+	UPDATE table_stops
+	SET point_id = table_points.point_id
+	FROM table_points
+	WHERE
+		table_stops.latitude = table_points.latitude
+		AND table_stops.longitude = table_points.longitude;
