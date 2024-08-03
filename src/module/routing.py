@@ -1,10 +1,10 @@
 import numpy as np
 import folium
 import math
-import src.module.loadSQL as loadSQL
+import module.loadSQL as loadSQL
 import psycopg2
 # from data_hosts_vlad import *
-from src.tests.my_SQL import *
+from module.data_hosts_vlad import *
 import random
 
 
@@ -37,7 +37,6 @@ class Routing:
         if connect_itinerary:
             self.__is_connect_itinerary = True
             try:
-                # Подключение к базе данных
                 conn = psycopg2.connect(
                     host=host,
                     port=port,
@@ -321,13 +320,14 @@ class Routing:
             index += 1
 
         map_folium.get_root().html.add_child(folium.Element("""
-<style>
-.mapText {
-    white-space: nowrap;
-    font-size:large
-}
-</style>
-"""))
+            <style>
+            .mapText {
+                white-space: nowrap;
+                font-size:large
+            }
+            </style>
+            """
+        ))
         map_folium.save(name_file + '.html')
 
     def create_all_map(self, name_file: str) -> None:
