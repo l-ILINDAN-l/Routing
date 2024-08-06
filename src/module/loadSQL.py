@@ -32,7 +32,7 @@ def get_tables_as_2d_arrays(host, port, dbname, user, password) -> dict:
         for table in tables:
             table_name = table[0]
             cursor.execute(f"SELECT * FROM {table_name}")
-            rows = cursor.fetchall()
+            rows = sorted(cursor.fetchall(), key=lambda item: item[0])
             # Принудительное декодирование строк в UTF-8 с игнорированием или замещением ошибок
             decoded_rows = []
             for row in rows:
